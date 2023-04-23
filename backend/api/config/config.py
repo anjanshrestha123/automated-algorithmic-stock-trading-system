@@ -1,5 +1,7 @@
 import configparser
 from flask import Flask
+from flask_cors import CORS
+
 from controller.stock_trading_controller import stock_trading_controller_blueprint
 
 # Read App configuration from a file
@@ -9,6 +11,8 @@ config.read('app.properties')
 # Configure flask app
 app = Flask(__name__)
 app.register_blueprint(stock_trading_controller_blueprint)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 def get_stock_list_file_path():
