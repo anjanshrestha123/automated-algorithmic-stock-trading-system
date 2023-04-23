@@ -13,7 +13,7 @@ def fetch_tradeless_stock_ticker_list():
     traded_stock_ticker_list = []
     traded_stock_info_list_file_path = config.get_traded_stock_info_list_file_path()
     if os.path.isfile(traded_stock_info_list_file_path):
-        traded_stock_ticker_list = [traded_stock_info.split(' ')[0]
+        traded_stock_ticker_list = [traded_stock_info.split(' ')[1]
                                     for traded_stock_info in open(traded_stock_info_list_file_path, 'r').read().splitlines()]
 
     return list(set(stock_ticker_list) - set(traded_stock_ticker_list))

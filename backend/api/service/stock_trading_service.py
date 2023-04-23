@@ -14,12 +14,19 @@ def update_stock_list(request):
 
 
 def fetch_traded_stock_info_list():
-    return file_util.fetch_traded_stock_info_list()
+    return {
+        'stock_info_list': file_util.fetch_traded_stock_info_list()
+    }
 
 
 def run_ml_model():
-    return str(ml_model_runner.run_ml_model())
+    return {
+        'response': str(ml_model_runner.run_ml_model())
+    }
 
 
 def run_trading_system():
-    return str(trading_system_runner.run_trading_system())
+    return {
+        'response': str(trading_system_runner.run_trading_system())
+    }
+

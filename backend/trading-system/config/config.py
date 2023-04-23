@@ -20,6 +20,7 @@ def get_traded_stock_info_list_file_path():
 
 def get_traded_stock_info(stock_ticker, current_price, threshold_signal_price, take_profit_signal_price, stop_loss_price, quantity):
     return config.get('App', 'traded.stock.info.pattern').format(
+        date_time='{:%Y-%m-%dT%H:%M:%S}'.format(datetime.datetime.now()),
         stock_ticker=stock_ticker,
         current_price=current_price,
         threshold_signal_price=threshold_signal_price,

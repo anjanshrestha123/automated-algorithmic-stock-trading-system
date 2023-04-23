@@ -1,70 +1,148 @@
-<mat-stepper orientation="horizontal" linear #stepper>
+<div class="container">
+    <mat-stepper orientation="horizontal" linear #stepper>
 
-    <!-- 1. Add/Update Stock To Trade -->
-    <mat-step [stepControl]="addUpdateFormGroup">
-        <div class="center-content">
-            <img src="/assets/stock.png" style="height:300px; width:500PX" alt="Stock" >
-        </div>
-        <form [formGroup]="addUpdateFormGroup">
-            <ng-template matStepLabel>Add/Update Stock To Trade</ng-template>
-            <mat-form-field class="stock-ticker-chip-list" appearance="outline">
-                <mat-label>Stock Tickers</mat-label>
-                <mat-chip-list #chipList aria-label="Ticker selection" formControlName="stockTickers" required>
-                    <mat-chip *ngFor="let ticker of tickers" [selectable]="selectable" [removable]="removable"
-                        (removed)="remove(ticker)">
-                        {{ticker}}
-                        <button matChipRemove *ngIf="removable">
-                            <mat-icon>cancel</mat-icon>
-                        </button>
-                    </mat-chip>
-                    <input placeholder="Enter New Stock Ticker here ..." [matChipInputFor]="chipList"
-                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
-                        (matChipInputTokenEnd)="add($event)">
-                </mat-chip-list>
-            </mat-form-field>
-            <div class="center-content" >
-                <button mat-raised-button color="primary" matStepperNext (click)="updateStockList()"> Add / Update</button>
+        <!-- 1. Add/Update Stock To Trade -->
+        <mat-step [stepControl]="addUpdateFormGroup">
+            <div class="center-content">
+                <img src="/assets/stock.png" style="height:300px; width:500px" alt="Stock">
             </div>
-        </form>
-    </mat-step>
+            <form [formGroup]="addUpdateFormGroup">
+                <ng-template matStepLabel>Add/Update Stock To Trade</ng-template>
+                <mat-form-field class="stock-ticker-chip-list" appearance="outline">
+                    <mat-label>Stock Tickers</mat-label>
+                    <mat-chip-list #chipList aria-label="Ticker selection" formControlName="stockTickers" required>
+                        <mat-chip *ngFor="let ticker of tickers" [selectable]="selectable" [removable]="removable"
+                            (removed)="remove(ticker)">
+                            {{ticker}}
+                            <button matChipRemove *ngIf="removable">
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <input placeholder="Enter New Stock here ..." [matChipInputFor]="chipList"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                            (matChipInputTokenEnd)="add($event)">
+                    </mat-chip-list>
+                </mat-form-field>
+                <div class="center-content">
+                    <button mat-raised-button color="primary" matStepperNext (click)="updateStockList()"> Add /
+                        Update</button>
+                </div>
+            </form>
+        </mat-step>
 
-    <!-- 2. Generate Machine Learning Model -->
-    <mat-step>
-        <ng-template matStepLabel>Generate Machine Learning Model</ng-template>
-        <div class="center-content">
-            <img src="/assets/ml.jpeg" style="height:300px; width:300px" alt="ML" >
-        </div>
-        <div class="center-content" >
-            <button mat-raised-button color="accent" matStepperPrevious>Back</button>
-            <button mat-raised-button color="warn" matStepperNext>Skip</button>
-            <button mat-raised-button color="primary" matStepperNext (click)="runMlModel()">Generate</button>
-        </div>
-    </mat-step>
+        <!-- 2. Generate Machine Learning Model -->
+        <mat-step>
+            <ng-template matStepLabel>Generate Machine Learning Model</ng-template>
+            <div class="center-content">
+                <img src="/assets/ml.jpeg" style="height:300px; width:300px" alt="ML">
+            </div>
+            <div class="center-content">
+                <button mat-raised-button color="accent" matStepperPrevious>Back</button>
+                <button mat-raised-button color="warn" [disabled]="isMlModelRunning" matStepperNext>Skip</button>
+                <button mat-raised-button color="primary" [disabled]="isMlModelRunning" (click)="runMlModel(stepper)">Generate</button>
+            </div>
+        </mat-step>
 
-    <!-- 3. Run Trading System -->
-    <mat-step>
-        <ng-template matStepLabel>Run Trading System</ng-template>
-        <div class="center-content">
-            <img src="/assets/automation.jpg" style="height:300px; width:500px" alt="Automation" >
-        </div>
-        <div class="center-content" >
-            <button mat-raised-button color="accent" matStepperPrevious>Back</button>
-            <button mat-raised-button color="primary" matStepperNext (click)="runTradingSystem()">Run</button>
-        </div>
-    </mat-step>
+        <!-- 3. Run Trading System -->
+        <mat-step>
+            <ng-template matStepLabel>Run Trading System</ng-template>
+            <div class="center-content">
+                <img src="/assets/automation.jpg" style="height:300px; width:500px" alt="Automation">
+            </div>
+            <div class="center-content">
+                <button mat-raised-button color="accent" matStepperPrevious>Back</button>
+                <button mat-raised-button color="primary" matStepperNext (click)="runTradingSystem()">Run</button>
+            </div>
+        </mat-step>
 
-    <!-- Done -->
-    <mat-step>
-        <ng-template matStepLabel>Done</ng-template>
-        <div class="center-content">
-            <img src="/assets/hooray.png" style="height:300px; width:600px" alt="Hooray" >
-        </div>
-        <p class="center-content">You have successfully initiated the Trading System.</p>
-        <div class="center-content" >
-            <button mat-raised-button color="accent" matStepperPrevious>Back</button>
-            <button mat-raised-button color="primary" (click)="stepper.selectedIndex = 0">Restart</button>
-        </div>
-    </mat-step>
+        <!-- Done -->
+        <mat-step>
+            <ng-template matStepLabel>Done</ng-template>
+            <div class="center-content">
+                <img src="/assets/hooray.png" style="height:300px; width:600px" alt="Hooray">
+            </div>
+            <p class="center-content">You have successfully initiated the Trading System.</p>
+            <div class="center-content">
+                <button mat-raised-button color="accent" matStepperPrevious>Back</button>
+                <button mat-raised-button color="primary" (click)="stepper.selectedIndex = 0">Restart</button>
+            </div>
+        </mat-step>
+    </mat-stepper>
+
+    <!-- Spinner -->
+    <div style ="margin: 20px; height: 30px;" class="center-content">
+        <mat-spinner *ngIf="isStockListFetching || isStockInfoListFetching || isMlModelRunning || isTradingSystemRunning"></mat-spinner>
+    </div>
 
 
-</mat-stepper>
+    <!-- Traded Stock Table -->
+    <p style="margin-top: 100px; font-size: 20px; text-align: center;">List of stocks that have been traded by the
+        Trading System</p>
+
+    <div class="mat-elevation-z8" style="background-color: white;">
+        <mat-form-field appearance="outline" style="padding-left: 20px; padding-right: 20px; width: 20%;">
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. AAPL" #input>
+        </mat-form-field>
+
+          <button mat-mini-fab color="warn" aria-label="Refresh" (click)="populateTradedStockInfoList()">
+            <mat-icon>refresh</mat-icon>
+          </button>
+
+        <table mat-table [dataSource]="dataSource" matSort matSortActive="date_time" matSortDirection="desc">
+
+            <!-- Date Column -->
+            <ng-container matColumnDef="date_time">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+                <td mat-cell *matCellDef="let row"> {{row.date_time}}</td>
+            </ng-container>
+
+            <!-- Stock Column -->
+            <ng-container matColumnDef="stock_ticker">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Stock </th>
+                <td mat-cell *matCellDef="let row"> {{row.stock_ticker}} </td>
+            </ng-container>
+
+            <!-- Current Price Column -->
+            <ng-container matColumnDef="current_price">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Current Price </th>
+                <td mat-cell *matCellDef="let row"> ${{row.current_price}} </td>
+            </ng-container>
+
+            <!-- Threshold Signal Price Column -->
+            <ng-container matColumnDef="threshold_signal_price">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Threshold Signal Price </th>
+                <td mat-cell *matCellDef="let row"> ${{row.threshold_signal_price}} </td>
+            </ng-container>
+
+            <!-- Take Profit Signal Price Column -->
+            <ng-container matColumnDef="take_profit_signal_price">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Take Profit Signal Price </th>
+                <td mat-cell *matCellDef="let row"> ${{row.take_profit_signal_price}} </td>
+            </ng-container>
+
+            <!-- Stop Loss Price Column -->
+            <ng-container matColumnDef="stop_loss_price">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Stop Loss Price </th>
+                <td mat-cell *matCellDef="let row"> ${{row.stop_loss_price}} </td>
+            </ng-container>
+
+            <!-- Quantity Column -->
+            <ng-container matColumnDef="quantity">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </th>
+                <td mat-cell *matCellDef="let row"> {{row.quantity}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+            </tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+
+</div>

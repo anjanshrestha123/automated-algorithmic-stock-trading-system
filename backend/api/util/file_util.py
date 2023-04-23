@@ -14,13 +14,12 @@ def update_stock_list(stock_list):
 
 
 def fetch_traded_stock_info_list():
-    traded_stock_info_dict = {}
+    traded_stock_info_list = []
     file_path = config.get_traded_stock_info_list_file_path()
     file_name_pattern = file_path.split('/')[-1]
-    none_date_text = file_name_pattern.split('}')[-1]
     folder_path = file_path.replace(file_name_pattern, '')
 
     for file in os.listdir(folder_path):
-        date = file.replace(none_date_text, '')
-        traded_stock_info_dict[date] = stock_info_transformer.transform(open(folder_path + file, 'r').read().splitlines())
-    return traded_stock_info_dict
+        traded_stock_info_list.extend(stock_info_transformer.transform( open(folder_path + file, 'r').read().splitlines()))
+
+    return traded_stock_info_list

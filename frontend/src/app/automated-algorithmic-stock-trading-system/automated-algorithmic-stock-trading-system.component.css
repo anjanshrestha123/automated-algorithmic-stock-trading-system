@@ -1,7 +1,11 @@
-mat-stepper {
+.container {
     margin-top: 50px;
-    width: 80%;
-    margin-left: 10%;
+    margin-left: 15%;
+  }
+
+  mat-stepper {
+    min-height: 550px;
+    max-height: 550px;
   }
 
   button {
@@ -12,19 +16,27 @@ mat-stepper {
     margin-top: 16px;
   }
 
-  .container {
-    padding-top: 100px;
-    width: 200px;
-}
-
-.full-width{
-    width: 100%;
-}
-
-.container {
-    padding-top: 100px;
-}
 
 .stock-ticker-chip-list {
     width: 100%;
+}
+
+table {
+    width: 100%;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  td, th {
+    width: 14%;
+    word-wrap: break-word;
+    word-break: break-word;
+    padding-right: 10px !important;
+  }
+
+  ::ng-deep .mat-horizontal-stepper-header{
+    pointer-events: none !important;
 }

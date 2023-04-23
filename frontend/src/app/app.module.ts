@@ -25,7 +25,9 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatStepperModule} from '@angular/material/stepper';
 import { AutomatedAlgorithmicStockTradingSystemComponent } from './automated-algorithmic-stock-trading-system/automated-algorithmic-stock-trading-system.component';
-import { StockListComponent } from './stock-list/stock-list.component';
+import {MatTableModule} from '@angular/material/table';
+import {MatSortModule} from '@angular/material/sort';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 
 @NgModule({
@@ -33,8 +35,7 @@ import { StockListComponent } from './stock-list/stock-list.component';
     AppComponent,
     AutomatedAlgorithmicStockTradingSystemComponent,
     HeaderComponent,
-    FooterComponent,
-    StockListComponent
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +59,10 @@ import { StockListComponent } from './stock-list/stock-list.component';
     MatChipsModule,
     MatMenuModule,
     MatProgressSpinnerModule,
-    MatStepperModule
+    MatStepperModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent]
