@@ -81,6 +81,7 @@ export class AutomatedAlgorithmicStockTradingSystemComponent implements OnInit, 
 
     if (value) {
       this.tickers.push(value);
+      this.addUpdateFormGroup.controls.stockTickers.setValue(this.tickers);
     }
 
     // Clear the input value
@@ -92,14 +93,15 @@ export class AutomatedAlgorithmicStockTradingSystemComponent implements OnInit, 
 
     if (index >= 0) {
       this.tickers.splice(index, 1);
+      this.addUpdateFormGroup.controls.stockTickers.setValue(this.tickers);
     }
   }
 
   updateStockList(): void {
     // Starts the spinner
     this.isStockListFetching = true;
-
     let stockList: StockList = new StockList(this.addUpdateFormGroup.controls.stockTickers.value);
+
     this.stockTradingService.updateStockList(stockList).subscribe(data => {
       if (data) {
         this.updateStock(data);
