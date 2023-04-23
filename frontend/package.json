@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "sudo ng serve --host=0.0.0.0 --port=80 --disable-host-check --proxy-config proxy.conf.json --prod",
+    "start": "sudo ng serve --host=0.0.0.0 --port=80 --disable-host-check --configuration=test",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
