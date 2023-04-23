@@ -1,5 +1,7 @@
 # custom
 /backend/api/.idea/
+/backend/trading-system/.idea/
+backend/ml/.idea/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
