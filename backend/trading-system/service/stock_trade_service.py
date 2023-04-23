@@ -13,7 +13,7 @@ def is_stock_market_open():
     current_date_time = datetime.datetime.now(timezone(config.get_stock_market_time_zone()))
 
     # 0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday, 6=Sunday
-    is_weekday = current_date_time.weekday() <= 4
+    is_weekday = current_date_time.weekday() <= config.get_weekday_number()
 
     # check for stock market opening and closing time
     stock_market_open_time = datetime.time(config.get_stock_market_open_hour(), config.get_stock_market_open_minute())

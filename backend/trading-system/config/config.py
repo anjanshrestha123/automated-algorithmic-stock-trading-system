@@ -65,9 +65,14 @@ def get_take_profit_signal_in_pct():
     return int(config.get('App', 'take.profit.signal.in.pct'))
 
 
+def get_weekday_number():
+    return int(config.get('App', 'weekday.number'))
+
+
 def get_alpaca_api_key():
     return config.get('Alpaca', 'alpaca.api.key')
 
 
 def get_alpaca_api_secret():
     return config.get('Alpaca', 'alpaca.api.secret')
+
