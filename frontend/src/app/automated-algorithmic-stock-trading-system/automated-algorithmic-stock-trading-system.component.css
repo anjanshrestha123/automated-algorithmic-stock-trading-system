@@ -1,0 +1,30 @@
+mat-stepper {
+    margin-top: 50px;
+    width: 80%;
+    margin-left: 10%;
+  }
+
+  button {
+      margin: 10px;
+  }
+  
+  .mat-form-field {
+    margin-top: 16px;
+  }
+
+  .container {
+    padding-top: 100px;
+    width: 200px;
+}
+
+.full-width{
+    width: 100%;
+}
+
+.container {
+    padding-top: 100px;
+}
+
+.stock-ticker-chip-list {
+    width: 100%;
+}

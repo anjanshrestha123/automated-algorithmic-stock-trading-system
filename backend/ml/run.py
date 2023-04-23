@@ -12,7 +12,7 @@ ep = ExecutePreprocessor(timeout=600, kernel_name='python3')
 # Generate trained model for each stock in the list
 for stock_ticker in open(config.get('App', 'stock.list.file.path'), 'r').read().splitlines():
     os.environ['STOCK_TICKER'] = stock_ticker.strip().upper()
-
+    os.environ['MODEL_OUTPUT_PATH'] = config.get('App', 'model.output.path').format(stock_ticker=stock_ticker)
     # Run the notebook
     print('Generating trained model for ', os.environ['STOCK_TICKER'])
     ep.preprocess(nb_in)

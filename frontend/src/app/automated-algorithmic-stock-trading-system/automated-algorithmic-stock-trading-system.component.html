@@ -1,0 +1,70 @@
+<mat-stepper orientation="horizontal" linear #stepper>
+
+    <!-- 1. Add/Update Stock To Trade -->
+    <mat-step [stepControl]="addUpdateFormGroup">
+        <div class="center-content">
+            <img src="/assets/stock.png" style="height:300px; width:500PX" alt="Stock" >
+        </div>
+        <form [formGroup]="addUpdateFormGroup">
+            <ng-template matStepLabel>Add/Update Stock To Trade</ng-template>
+            <mat-form-field class="stock-ticker-chip-list" appearance="outline">
+                <mat-label>Stock Tickers</mat-label>
+                <mat-chip-list #chipList aria-label="Ticker selection" formControlName="stockTickers" required>
+                    <mat-chip *ngFor="let ticker of tickers" [selectable]="selectable" [removable]="removable"
+                        (removed)="remove(ticker)">
+                        {{ticker}}
+                        <button matChipRemove *ngIf="removable">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip>
+                    <input placeholder="Enter New Stock Ticker here ..." [matChipInputFor]="chipList"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                        (matChipInputTokenEnd)="add($event)">
+                </mat-chip-list>
+            </mat-form-field>
+            <div class="center-content" >
+                <button mat-raised-button color="primary" matStepperNext (click)="updateStockList()"> Add / Update</button>
+            </div>
+        </form>
+    </mat-step>
+
+    <!-- 2. Generate Machine Learning Model -->
+    <mat-step>
+        <ng-template matStepLabel>Generate Machine Learning Model</ng-template>
+        <div class="center-content">
+            <img src="/assets/ml.jpeg" style="height:300px; width:300px" alt="ML" >
+        </div>
+        <div class="center-content" >
+            <button mat-raised-button color="accent" matStepperPrevious>Back</button>
+            <button mat-raised-button color="warn" matStepperNext>Skip</button>
+            <button mat-raised-button color="primary" matStepperNext (click)="runMlModel()">Generate</button>
+        </div>
+    </mat-step>
+
+    <!-- 3. Run Trading System -->
+    <mat-step>
+        <ng-template matStepLabel>Run Trading System</ng-template>
+        <div class="center-content">
+            <img src="/assets/automation.jpg" style="height:300px; width:500px" alt="Automation" >
+        </div>
+        <div class="center-content" >
+            <button mat-raised-button color="accent" matStepperPrevious>Back</button>
+            <button mat-raised-button color="primary" matStepperNext (click)="runTradingSystem()">Run</button>
+        </div>
+    </mat-step>
+
+    <!-- Done -->
+    <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <div class="center-content">
+            <img src="/assets/hooray.png" style="height:300px; width:600px" alt="Hooray" >
+        </div>
+        <p class="center-content">You have successfully initiated the Trading System.</p>
+        <div class="center-content" >
+            <button mat-raised-button color="accent" matStepperPrevious>Back</button>
+            <button mat-raised-button color="primary" (click)="stepper.selectedIndex = 0">Restart</button>
+        </div>
+    </mat-step>
+
+
+</mat-stepper>

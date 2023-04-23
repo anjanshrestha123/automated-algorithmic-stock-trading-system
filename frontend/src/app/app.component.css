@@ -1,0 +1,10 @@
+.app-container {
+    min-height: 100vh;
+    background-color:  white;
+}
+
+.footer-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
