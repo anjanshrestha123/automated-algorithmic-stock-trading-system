@@ -53,4 +53,4 @@
 
 ### 6. Delete today's file for traded stock info from automated-algorithmic-stock-trading-system/backend/trading-system/output/
 
-### 7.  Can be accessed at (replate host name with new host name): http://csce-5214-group-8.eastus.cloudapp.azure.com/#/stock-trading-system
+### 7.  Can be accessed at (replace host name with new host name): http://csce-5214-group-8.eastus.cloudapp.azure.com/#/stock-trading-system
