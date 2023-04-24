@@ -51,6 +51,17 @@
 - nohup npm start & (if want to run in background)
 - tail -f nohup.out (for checking logs)
 
-### 6. Delete today's file for traded stock info from automated-algorithmic-stock-trading-system/backend/trading-system/output/
+### 6. Add startup script on rebooting:
+- chmod 777 automated-algorithmic-stock-trading-system/script
+- crontab -e
+- @reboot /home/csce5214/develop/automated-algorithmic-stock-trading-system/script
 
-### 7.  Can be accessed at (replace host name with new host name): http://csce-5214-group-8.eastus.cloudapp.azure.com/#/stock-trading-system
+To kill the running application:
+- ps -ef | grep 80
+- kill <pid>
+- ps -ef | grep 5002
+- kill <pid>
+
+### 7. Delete today's file for traded stock info from automated-algorithmic-stock-trading-system/backend/trading-system/output/
+
+### 8.  Can be accessed at (replace host name with new host name): http://csce-5214-group-8.eastus.cloudapp.azure.com/#/stock-trading-system
