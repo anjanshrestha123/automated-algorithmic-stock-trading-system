@@ -1,3 +1,5 @@
+cd /home/csce5214/develop/automated-algorithmic-stock-trading-system
+git pull
 cd /home/csce5214/develop/automated-algorithmic-stock-trading-system/backend/api
 nohup python3 run.py &
 cd /home/csce5214/develop/automated-algorithmic-stock-trading-system/frontend
