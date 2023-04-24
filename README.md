@@ -54,7 +54,7 @@
 ### 6. Add startup script on rebooting:
 - chmod 777 automated-algorithmic-stock-trading-system/script
 - crontab -e
-- @reboot sleep 60;/home/csce5214/develop/automated-algorithmic-stock-trading-system/script
+- @reboot /home/csce5214/develop/automated-algorithmic-stock-trading-system/script
 - If above step did start the application, log into the server and run it manually: /home/csce5214/develop/automated-algorithmic-stock-trading-system/script
 
 To kill the running application:
