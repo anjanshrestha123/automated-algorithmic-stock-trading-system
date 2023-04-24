@@ -1,2 +1,4 @@
-nohup python3 /home/csce5214/develop/automated-algorithmic-stock-trading-system/backend/api/run.py &
-nohup npm start --prefix /home/csce5214/develop/automated-algorithmic-stock-trading-system/frontend/ &
+cd /home/csce5214/develop/automated-algorithmic-stock-trading-system/backend/api
+nohup python3 run.py &
+cd /home/csce5214/develop/automated-algorithmic-stock-trading-system/frontend
+nohup npm start &
