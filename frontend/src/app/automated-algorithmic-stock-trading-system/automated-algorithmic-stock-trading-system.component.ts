@@ -147,9 +147,9 @@ export class AutomatedAlgorithmicStockTradingSystemComponent implements OnInit, 
   }
 
   runTradingSystem(): void {
-
+  this.isTradingSystemRunning = true;
     this.stockTradingService.runTradingSystem().subscribe(() => {
-      console.log('Started Trading System')
+      this.isTradingSystemRunning = false;
     });
   }
 
