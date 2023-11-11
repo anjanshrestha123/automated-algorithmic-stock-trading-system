@@ -1,0 +1,240 @@
+# Install Ubuntu
+https://ubuntu.com/tutorials/how-to-install-ubuntu-desktop-on-raspberry-pi-4#3-boot-your-desktop
+
+https://howchoo.com/g/ote2mjkzzta/control-raspberry-pi-fan-temperature-python
+
+# Update all the package 
+sudo apt-get update
+sudo apt-get upgrade
+
+# Enable SSH Connection 
+sudo apt install openssh-server
+sudo systemctl status ssh 
+sudo ufw allow ssh
+sudo service ssh restart
+
+# Enable Remote Desktop Connection 
+sudo apt-get install xrdp
+sudo apt-get install tightvncserver
+sudo ufw allow 3389
+sudo service xrdp restart
+
+# Restart
+shutdown -r
+
+# Enable Remote Desktop Connection - via public IP
+Enable port forwarding for TCP : 3389 in the router admin console to the rasberry pi private IP address
+
+# Enable SSH Connection - via public IP
+Enable port forwarding for TCP : 22 in the router admin console to the rasberry pi private IP address
+
+# Add 5G wifi network connection
+sudo nano /etc/default/crda
+And add your country code (US)
+
+#Install MongoDB (https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)
+wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
+sudo apt-get update
+sudo apt-get install mongodb-org=4.4.8 mongodb-org-server=4.4.8 mongodb-org-shell=4.4.8 mongodb-org-mongos=4.4.8 mongodb-org-tools=4.4.8
+mongod --version
+sudo nano /etc/mongod.conf -> change bind ip to 0.0.0.0 and add authorization: enabled in security section
+sudo ufw allow 27017
+
+
+#Start MongoDB
+sudo systemctl start mongod
+sudo systemctl daemon-reload
+sudo systemctl status mongod
+sudo systemctl enable mongod
+sudo systemctl stop mongod
+sudo systemctl restart mongod
+mongo
+
+
+# Mongo DB commands
+use stock
+db.createUser( { user: "spa",
+                 pwd: "spa123",
+                 roles: [ { role: "clusterAdmin", db: "admin" },
+                          { role: "readWriteAnyDatabase", db: "admin" }] },
+               { w: "majority" , wtimeout: 5000 } )
+
+db.stock.insertOne(
+{"_id":1,"name":"Apple","ticker":"AAPL","description":"","history_present":true,"updated_at": new Date(),"updated_by":"Stock Data API"});
+db.stock.insertOne(
+{"_id":2,"name":"Tesla","ticker":"TSLA","description":"","history_present":true,"updated_at": new Date(),"updated_by":"Stock Data API"});
+
+
+
+# Install mySQL (https://technowikis.com/40865/how-to-install-mysql-on-ubuntu-21-04-hirsute-hippo)
+lsb_release -a 
+sudo apt update 
+sudo apt install mysql-server 
+cd /etc/mysql/my.cnf and add following: [mysqld]  bind-address=0.0.0.0
+sudo systemctl status mysql 
+sudo systemctl restart mysql
+sudo mysql 
+
+# mySQL commands
+CREATE USER 'spa'@'localhost' IDENTIFIED BY 'spa123';
+GRANT ALL PRIVILEGES ON *.* TO 'spa'@'localhost' WITH GRANT OPTION;
+CREATE USER 'spa'@'%' IDENTIFIED BY 'spa123';
+GRANT ALL PRIVILEGES ON *.* TO 'spa'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+# Install git 
+sudo apt install git
+
+# Install Jenkins (https://pkg.origin.jenkins.io/debian-stable/)
+- sudo wget -O /usr/share/keyrings/jenkins-keyring.asc https://pkg.jenkins.io/debian-stable/jenkins.io-2023.keysudo apt update
+- echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+- sudo apt-get update
+- sudo apt-get install fontconfig openjdk-11-jre
+- sudo apt-get install jenkins
+- systemctl daemon-reload
+- sudo ufw allow 8080
+- sudo systemctl start jenkins
+- Enter credentials displayed in the terminal to the UI when its prompted
+- sudo systemctl status jenkins
+- sudo systemctl restart jenkins
+- http://192.168.0.34:8080/restart
+
+# sudo apt install openjdk-8-jre
+# sudo nano /etc/init.d/jenkins
+# Replace with: PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/lib/jvm/java-8-openjdk-amd64/bin/
+
+# Integrate Jenkins with Github
+-> Generate API Token by going to profilename -> configure -> add token
+-> Go to github repo in setting and under webhook section, add jenkins url (<jenkins-url>/github-webhook )and token   (11bb4b781f1d73005784e525e742956c19)
+-> make sure to check git scm polling while creating a job
+
+
+# Install Docker
+sudo apt install docker.io
+sudo apt install linux-modules-extra-raspi
+sudo chmod 777 /var/run/docker.sock
+
+
+# Docker Commands
+docker ps 
+docker ps -a
+docker stop <container_id>
+docker rm <container_id>
+docker logs <container_id>
+docker logs -f <container_id>
+docker build -t stock-data-api .
+docker run -d -p 5001:80 --name stock-data-api stock-data-api      -> 5001 is server port and 80 is container port (by default asp docker image runs on 80)
+docker run -d -p 5002:80 --name stock-data-analyze-api stock-data-analyze-api
+docker run -d -p 5003:80 --name stock-data-analyzer-ol stock-data-analyzer-ol
+docker run -d -p 5004:80 --name stock-data-analyzer-ui stock-data-analyzer-ui
+docker run -d --name stock-price-prediction-model stock-price-prediction-model
+docker exec <container_id> cat app.log
+docker image ls
+docker container prune -> delete all the stopped containers
+docker image rm <image_name>
+
+
+# For tensorflow support 
+sudo apt install libatlas-base-dev
+
+# Check temperature 
+sudo apt install hddtemp lm-sensors
+sensors
+
+
+# Command that needed to run after restart:
+sudo chmod 777 /var/run/docker.sock
+sudo systemctl start mongod
+sudo ufw allow 27017
+sudo ufw allow 3389
+sudo ufw allow 3306
+sudo systemctl start jenkins
+
+# Basic Linux commands
+sudo apt remove <package name>
+sudo reboot
+netstat -tunlp
+
+# Check connection with host in specific port 
+nc -vz 192.168.0.16 27017
+
+
+# Whole step to add application in CI/CD pipeline:
+1. Add Jenkins job -> change the port number if there is any in the build script 
+2. Integrate jenkins with github by adding webhook
+3. Port forward that port number in the router admin console
+
+
+
+
+
+
+https://faun.pub/basic-ci-cd-for-python-projects-with-docker-and-jenkins-38eeb547fb28
+
+
+https://customer.cradlepoint.com/s/article/How-to-Do-Port-Forwarding-To-Multiple-Devices-on-the-Same-Port
+
+
+
+
+
+
+# Mongo DB commands
+show databases
+
+use stock
+db.addUser({user: "stock",pwd: "stockAnalyzer312",   roles: [ "userAdminAnyDatabase"]})
+
+use admin
+db.addUser({user: "admin",pwd: "stockAnalyzer312",   roles: [ "dbAdminAnyDatabase"]})
+
+
+db.system.users.update({"stock" : "stockAnalyzer312"}, {$addToSet: {'roles': [ 'dbAdminAnyDatabase']}})
+db.system.users.update({"admin" : "stockAnalyzer312"}, {$addToSet: {'roles': [ 'dbAdminAnyDatabase']}})
+
+
+db.addUser({user: "stock",pwd: "stockAnalyzer312",   roles: [ "dbOwner", "stock"]})
+
+
+{ "_id" : ObjectId("61d73df21923b892740b76fd"), "user" : "stock", "pwd" : "163ed00a864a55b6bf1f59f346b8a08c", "roles" : [  "userAdminAnyDatabase" ] }
+
+
+
+#Backup
+https://embedds.com/raspberry-pi-formatting-and-mounting-usb-drive/
+sudo apt install mongodb
+sudo systemctl enable mongodb
+cd /etc/mongodb.conf
+uncomment auth=true
+sudo mongod --auth --dbpath=/media/pi/EXT_DRIVE/mongodb/data --logpath /media/pi/EXT_DRIVE/mongodb/log/mongodb.log --fork -> start mongo db server
+sudo mongod --dbpath=/media/pi/EXT_DRIVE/mongodb/data --logpath /media/pi/EXT_DRIVE/mongodb/log/mongodb.log --fork
+sudo mongod --repair --dbpath=/media/pi/EXT_DRIVE/mongodb/data --logpath /media/pi/EXT_DRIVE/mongodb/log/mongodb.log
+might need to remount drive on restart and make sure the path matched with dbpath
+pidof mongod
+sudo kill -9 <mongodb_pid>
+mongo -> Start mongo shell
+
+
+# Windows Server:
+Private Host: 192.168.4.87
+Public Host: 47.160.86.37
+SSH Port: 22
+Username: aj
+Password: Rr@bidstha312
+Connection Detail: ssh aj@47.160.86.37
+
+# Jenkins Serer:
+Private Host: 192.168.4.87
+Public Host: 47.160.86.37
+Port: 8080
+Username: aj
+Password: Rr@bidstha312
+Url: http://192.168.4.87:8080/
+
+# Github Token:
+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
+
+
+
+
